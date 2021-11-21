@@ -1,1 +1,8 @@
 .idea/
+.metadata
+.packages
+analysis_options.yaml
+isekai_calculator.iml
+pubspec.lock
+pubspec.yaml
+.dart_tool
