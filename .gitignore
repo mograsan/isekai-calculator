@@ -1,5 +1,6 @@
 .idea/
 .dart_tool
+build
 #.metadata
 #.packages
 #analysis_options.yaml
