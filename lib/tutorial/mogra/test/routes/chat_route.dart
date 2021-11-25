@@ -1,26 +1,49 @@
 import 'package:flutter/material.dart';
 
-class Wallet extends StatelessWidget { // <- (※1)
+class Chat extends StatelessWidget {
+  String userName;
+  String message;
+  Chat(this.userName, this.message);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("ウォレット"), // <- (※2)
-        centerTitle: true,
-        backgroundColor: Colors.black87,
-        leading: const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Icon(Icons.settings)
+        title: Text(userName),
+      ),
+      body: Center(child: Text(message)),
+      backgroundColor: Colors.cyan,
+      bottomNavigationBar: BottomAppBar(
+        child: Row(
+          children: <Widget>[
+            IconButton(
+              icon: const Icon(Icons.add),
+              onPressed: () => {},
+            ),
+            IconButton(
+              icon: const Icon(Icons.camera_alt),
+              onPressed: () => {},
+            ),
+            IconButton(
+              icon: const Icon(Icons.photo),
+              onPressed: () => {},
+            ),
+            const Expanded(
+              child: TextField(
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Aa',
+                ),
+              ),
+            ),
+            IconButton(
+              icon: const Icon(Icons.mic),
+              onPressed: () => {},
+            ),
+          ],
         ),
-        actions: const [
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Icon(Icons.add),
-          ),
-        ],
       ),
-      body: const Center(child: Text("お前は所詮ATM") // <- (※3)
-      ),
+
     );
   }
 }

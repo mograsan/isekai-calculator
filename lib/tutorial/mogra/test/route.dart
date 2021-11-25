@@ -73,13 +73,16 @@ class _RootWidgetState extends State<RootWidget>
 
   @override
   Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      type: BottomNavigationBarType.fixed,
-      items: _bottomNavigationBarItems,
-      currentIndex: _selectedIndex,
-      onTap: _onItemTapped,
-      selectedItemColor: Colors.black87,
-      unselectedItemColor: Colors.black26,
+    return Scaffold(
+      body: _routes[_selectedIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        items: _bottomNavigationBarItems,
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+        selectedItemColor: Colors.black87,
+        unselectedItemColor: Colors.black26,
+      ),
     );
   }
 }
