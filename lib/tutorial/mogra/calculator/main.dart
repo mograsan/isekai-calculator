@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'formula_controller.dart';
 import 'keyboard.dart';
 import 'output.dart';
 
@@ -14,15 +16,19 @@ class MyCalculator extends StatelessWidget {
     return MaterialApp(
       title: "calculator",
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: Column(
+      color: Colors.black,
+      home: ChangeNotifierProvider(
+        create: (context) => FormulaController(),
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Output(),
             Keyboard(),
-            Container(
-              height: 80,
-              color: Colors.black,
+            Expanded(
+              // height: 80,
+              child: Container(
+                color: Colors.black,
+              )
             )
           ],
         ),
