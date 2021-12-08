@@ -45,4 +45,4 @@ specified as follows.
 ## Reference
 - [Environmental settings for MacOS (Qiita)](https://qiita.com/oekazuma/items/92e9bae4268fea107efa)
 - [Flutter Icons class](https://api.flutter.dev/flutter/material/Icons-class.html)
-- [Install built apps in your smart phone] (https://note.com/nbht/n/nd4338701daa5)
+- [Install built apps in your smart phone](https://note.com/nbht/n/nd4338701daa5)
