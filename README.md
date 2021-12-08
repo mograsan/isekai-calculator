@@ -27,6 +27,7 @@ A new Flutter project for a calculator written in isekai-characters.
 
 	```
 	$ flutter devices  
+
 	2 connected devices:  
 	SO 02J                    • QV7006HH0D    • android-arm64 • Android 8.0.0 (API 26). 
 	Android SDK built for x86 • emulator-5554 • android-x86   • Android 7.0 (API 24) (emulator)
