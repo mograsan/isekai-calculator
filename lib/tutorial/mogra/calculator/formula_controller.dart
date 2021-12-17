@@ -1,12 +1,19 @@
 import 'dart:ffi';
 import 'dart:math';
 
+import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:math_expressions/math_expressions.dart';
 
 class FormulaController with ChangeNotifier {
-  String formula = '0';
-  String currentChar = '0';
+  String currentNum = '';
+  String displayNum = '0';
+  String result = '0';
+  String tmpResult = '0';
+  String plusOrSubOp = '';
+  String multiOrDivOp = '';
+  String lastOp = '';
+  String recentOp = '';
   Parser parser = Parser();
   bool usedOperator = false;
   ContextModel context = ContextModel();
@@ -20,106 +27,199 @@ class FormulaController with ChangeNotifier {
   Color divideButtonFontColor = Colors.white;
   int digit = 0;
 
-  void addNumber(String n) {
-    clearButtonColor();
-    int numLen = currentChar.length;
-    if(usedOperator){
-      currentChar = '0';
-      usedOperator = false;
-    }
-    if(n == '.'){
-      if(currentChar[numLen-1] != '.'){
-        currentChar += n;
-        formula += n;
+  void applyOperator(String op){
+    lastOp = op;
+    recentOp = lastOp;
+    changeButtonColor(op);
+    if(op == '+' || op == '-') {
+      if (plusOrSubOp != '' && multiOrDivOp != '') {
+        var tmp = calculate(tmpResult, currentNum, multiOrDivOp);
+        displayNum = calculate(result, tmp, plusOrSubOp);
+      }
+      else if (plusOrSubOp != '') {
+        displayNum = calculate(result, currentNum, plusOrSubOp);
+      }
+      else if (multiOrDivOp != '') {
+        displayNum = calculate(result, currentNum, multiOrDivOp);
       }
     }
-    else{
-      if(currentChar == '0' || currentChar == 'エラー'){
-        currentChar = n;
+    else if(op == '*' || op == '/') {
+      if (plusOrSubOp != '' && multiOrDivOp != '') {
+        displayNum = calculate(tmpResult, currentNum, multiOrDivOp);
       }
-      else{
-        currentChar += n;
+      else if (plusOrSubOp != '') {
+        displayNum = currentNum;
       }
-      if(formula == '0'){
-        formula = n;
+      else if (multiOrDivOp != '') {
+        displayNum = calculate(result, currentNum, multiOrDivOp);
       }
-      else{
-        formula += n;
+    }
+    else if(op == '='){
+      if (multiOrDivOp == '' && plusOrSubOp == '') {
+        if (currentNum != '') {
+          result = currentNum;
+        }
       }
+      else if (multiOrDivOp != '' && plusOrSubOp != '') {
+        tmpResult = calculate(tmpResult, currentNum, multiOrDivOp);
+        result = calculate(result, tmpResult, plusOrSubOp);
+      }
+      else if (multiOrDivOp != '') {
+        result = calculate(result, currentNum, multiOrDivOp);
+      }
+      else {
+        result = calculate(result, currentNum, plusOrSubOp);
+      }
+      plusOrSubOp = '';
+      multiOrDivOp = '';
+      tmpResult = '0';
+      currentNum = '';
+      lastOp = '';
+      recentOp = '';
+      displayNum = result;
     }
     notifyListeners();
   }
 
-  void addOperator(String op){
-    clearButtonColor();
-    if(currentChar != 'エラー') {
-      if (usedOperator) {
-        final formulaLen = formula.length - 1;
-        formula = formula.substring(0, formulaLen);
-      }
-      switch (op) {
-        case '+':
-          plusButtonColor = Colors.white;
-          plusButtonFontColor = Colors.orange;
-          calculate();
-          break;
-        case '-':
-          minusButtonColor = Colors.white;
-          minusButtonFontColor = Colors.orange;
-          calculate();
-          break;
-        case '*':
-          multipleButtonColor = Colors.white;
-          multipleButtonFontColor = Colors.orange;
-          break;
-        case '/':
-          divideButtonColor = Colors.white;
-          divideButtonFontColor = Colors.orange;
-          break;
-      }
-      formula += op;
-      usedOperator = true;
+  String calculate(String num1, String num2, String op){
+    switch(op){
+      case '+':
+        return (Decimal.parse(num1) + Decimal.parse(num2)).toString();
+      case '-':
+        return (Decimal.parse(num1) - Decimal.parse(num2)).toString();
+      case '*':
+        return (Decimal.parse(num1) * Decimal.parse(num2)).toString();
+      case '/':
+        var ans = (Decimal.parse(num1) / Decimal.parse(num2)).toString();
+        if(ans.contains('/')){
+          ans = (Decimal.parse(num1) / Decimal.parse(num2)).toDouble().toString();
+        }
+        return ans;
     }
+    return '';
+  }
+
+  void addNumber(String n) {
+    clearButtonColor();
+    if(lastOp != ''){
+      if(plusOrSubOp != '' && multiOrDivOp != ''){
+        tmpResult = calculate(tmpResult, currentNum, multiOrDivOp);
+        multiOrDivOp = '';
+        if(lastOp == '+' || lastOp == '-'){
+          result = calculate(result, tmpResult, plusOrSubOp);
+          plusOrSubOp = lastOp;
+        }
+        else{
+          multiOrDivOp = lastOp;
+        }
+      }
+      else if(plusOrSubOp != ''){
+        if(lastOp == '+' || lastOp == '-'){
+          result = calculate(result, currentNum, plusOrSubOp);
+          plusOrSubOp = lastOp;
+        }
+        else{
+          tmpResult = currentNum;
+          multiOrDivOp = lastOp;
+        }
+      }
+      else if(multiOrDivOp != ''){
+        result = calculate(result, currentNum, multiOrDivOp);
+        multiOrDivOp = '';
+        if(lastOp == '+' || lastOp == '-'){
+          plusOrSubOp = lastOp;
+        }
+        else{
+          multiOrDivOp = lastOp;
+        }
+      }
+      else{
+        if(currentNum != ''){
+          result = currentNum;
+        }
+        if(lastOp == '+' || lastOp == '-'){
+          plusOrSubOp = lastOp;
+        }
+        else{
+          multiOrDivOp = lastOp;
+        }
+      }
+      lastOp = '';
+      currentNum = '';
+    }
+    if(currentNum == '0'){
+      if(n == '.'){
+        currentNum = '0.';
+      }
+      else{
+        currentNum = n;
+      }
+    }
+    else if(n == '.' && !currentNum.contains('.') || n != '.'){
+      if(currentNum == '' && n == '.'){
+        currentNum = '0.';
+      }
+      else{
+        currentNum += n;
+      }
+    }
+    displayNum = currentNum;
     notifyListeners();
   }
 
   void allClear(){
-    formula = '0';
-    currentChar = '0';
+    result = '0';
+    tmpResult = '0';
+    displayNum = '0';
+    currentNum = '';
+    plusOrSubOp = '';
+    multiOrDivOp = '';
+    lastOp = '';
+    recentOp = '';
     digit = 0;
     clearButtonColor();
     notifyListeners();
   }
 
   void clear(){
-    int numLen = currentChar.length;
-    int formulaLen = formula.length;
-    formula = formula.substring(0, formulaLen - numLen);
-    currentChar = '0';
+    displayNum = '0';
+    currentNum = '';
+    if(lastOp == '' && recentOp != ''){
+      lastOp = recentOp;
+    }
+    changeButtonColor(lastOp);
+    if(lastOp == '+' || lastOp == '-'){
+      plusOrSubOp = '';
+    }
+    else if(lastOp == '*' || lastOp == '/'){
+      multiOrDivOp = '';
+    }
     notifyListeners();
   }
 
   void changeCode(){
-    if(!usedOperator){
-      int numLen = currentChar.length;
-      if(double.parse(currentChar) >= 0){
-        currentChar = '-' + currentChar;
-      }
-      else{
-        currentChar = currentChar.substring(1, numLen);
-      }
-      int formulaLen = formula.length;
-      formula = formula.substring(0, formulaLen - numLen) + currentChar;
+    int numLen = displayNum.length;
+    if(double.parse(displayNum) >= 0){
+      displayNum = '-' + displayNum;
+    }
+    else{
+      displayNum = displayNum.substring(1, numLen);
     }
     notifyListeners();
   }
 
   void convertToPercentile(){
-    if(!usedOperator && currentChar != '0'){
-      int numLen = currentChar.length;
-      currentChar = (double.parse(currentChar) * 0.01).toString();
-      int formulaLen = formula.length;
-      formula = formula.substring(0, formulaLen - numLen) + currentChar;
+    if(displayNum != '0'){
+      displayNum = (Decimal.parse(displayNum) * Decimal.parse('0.01')).toString();
+      if(displayNum == result){
+        result = displayNum;
+      }
+      else if(displayNum == tmpResult){
+        tmpResult = displayNum;
+      }
+      else{
+        currentNum = displayNum;
+      }
     }
     notifyListeners();
   }
@@ -133,23 +233,29 @@ class FormulaController with ChangeNotifier {
     multipleButtonFontColor = Colors.white;
     divideButtonColor = Colors.orange;
     divideButtonFontColor = Colors.white;
-  }
-
-  void calculate(){
-    if(currentChar != 'エラー') {
-      Expression exp = parser.parse(formula);
-      var ans = exp.evaluate(EvaluationType.REAL, context);
-      formula = ans.toString();
-      currentChar = ans.toString();
-      formula = currentChar;
-      if (ans - ans.round() == 0.0) {
-        currentChar = ans.round().toString();
-        if (currentChar.length > 7) {
-          currentChar = 'エラー';
-          formula = '0';
-        }
-      }
-    }
     notifyListeners();
   }
+
+  void changeButtonColor(String op){
+    clearButtonColor();
+    switch(op){
+      case '+':
+        plusButtonColor = Colors.white;
+        plusButtonFontColor = Colors.orange;
+        break;
+      case '-':
+        minusButtonColor = Colors.white;
+        minusButtonFontColor = Colors.orange;
+        break;
+      case '*':
+        multipleButtonColor = Colors.white;
+        multipleButtonFontColor = Colors.orange;
+        break;
+      case '/':
+        divideButtonColor = Colors.white;
+        divideButtonFontColor = Colors.orange;
+        break;
+    }
+  }
+
 }
