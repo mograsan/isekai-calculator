@@ -27,6 +27,10 @@ class _KeyboardState extends State<Keyboard> with WidgetsBindingObserver{
     final multipleButtonFontColor = context.select((FormulaController controller) => controller.multipleButtonFontColor);
     final divideButtonColor = context.select((FormulaController controller) => controller.divideButtonColor);
     final divideButtonFontColor = context.select((FormulaController controller) => controller.divideButtonFontColor);
+    final Color numButtonPrimaryColor = Colors.grey[900]!;
+    final Color numButtonOnPrimaryColor = Colors.grey[200]!;
+    const buttonHeight = 73.0;
+    const buttonWidth = 73.0;
     return ChangeNotifierProvider(
         create: (context) => FormulaController(),
         child: Container(
@@ -42,8 +46,8 @@ class _KeyboardState extends State<Keyboard> with WidgetsBindingObserver{
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   SizedBox(
-                    width: 72,
-                    height: 72,
+                    width: buttonWidth,
+                    height: buttonHeight,
                     child: ElevatedButton(
                       child: const Text(
                           'AC',
@@ -69,8 +73,8 @@ class _KeyboardState extends State<Keyboard> with WidgetsBindingObserver{
                     ),
                   ),
                   SizedBox(
-                    width: 72,
-                    height: 72,
+                    width: buttonWidth,
+                    height: buttonHeight,
                     child: ElevatedButton(
                       child: const Text(
                           'C',
@@ -96,8 +100,8 @@ class _KeyboardState extends State<Keyboard> with WidgetsBindingObserver{
                     ),
                   ),
                   SizedBox(
-                    width: 72,
-                    height: 72,
+                    width: buttonWidth,
+                    height: buttonHeight,
                     child: ElevatedButton(
                       child: const Text(
                           '%',
@@ -122,8 +126,8 @@ class _KeyboardState extends State<Keyboard> with WidgetsBindingObserver{
                     ),
                   ),
                   SizedBox(
-                    width: 72,
-                    height: 72,
+                    width: buttonWidth,
+                    height: buttonHeight,
                     child: ElevatedButton(
                       child: Text(
                           '÷',
@@ -144,7 +148,7 @@ class _KeyboardState extends State<Keyboard> with WidgetsBindingObserver{
                         ),
                       ),
                       onPressed: () =>
-                          context.read<FormulaController>().addOperator('/'),
+                          context.read<FormulaController>().applyOperator('/'),
                     ),
                   ),
                 ],
@@ -153,8 +157,8 @@ class _KeyboardState extends State<Keyboard> with WidgetsBindingObserver{
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   SizedBox(
-                    width: 72,
-                    height: 72,
+                    width: buttonWidth,
+                    height: buttonHeight,
                     child: ElevatedButton(
                       child: const Text(
                           '7',
@@ -165,8 +169,8 @@ class _KeyboardState extends State<Keyboard> with WidgetsBindingObserver{
                           )
                       ),
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.grey[900],
-                        onPrimary: Colors.black,
+                        primary: numButtonPrimaryColor,
+                        onPrimary: numButtonOnPrimaryColor,
                         shape: const CircleBorder(
                           side: BorderSide(
                             color: Colors.black,
@@ -181,8 +185,8 @@ class _KeyboardState extends State<Keyboard> with WidgetsBindingObserver{
                     ),
                   ),
                   SizedBox(
-                    width: 72,
-                    height: 72,
+                    width: buttonWidth,
+                    height: buttonHeight,
                     child: ElevatedButton(
                       child: const Text(
                           '8',
@@ -193,8 +197,8 @@ class _KeyboardState extends State<Keyboard> with WidgetsBindingObserver{
                           )
                       ),
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.grey[900],
-                        onPrimary: Colors.black,
+                        primary: numButtonPrimaryColor,
+                        onPrimary: numButtonOnPrimaryColor,
                         shape: const CircleBorder(
                           side: BorderSide(
                             color: Colors.black,
@@ -208,8 +212,8 @@ class _KeyboardState extends State<Keyboard> with WidgetsBindingObserver{
                     ),
                   ),
                   SizedBox(
-                    width: 72,
-                    height: 72,
+                    width: buttonWidth,
+                    height: buttonHeight,
                     child: ElevatedButton(
                       child: const Text(
                           '9',
@@ -220,8 +224,8 @@ class _KeyboardState extends State<Keyboard> with WidgetsBindingObserver{
                           )
                       ),
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.grey[900],
-                        onPrimary: Colors.black,
+                        primary: numButtonPrimaryColor,
+                        onPrimary: numButtonOnPrimaryColor,
                         shape: const CircleBorder(
                           side: BorderSide(
                             color: Colors.black,
@@ -235,8 +239,8 @@ class _KeyboardState extends State<Keyboard> with WidgetsBindingObserver{
                     ),
                   ),
                   SizedBox(
-                    width: 72,
-                    height: 72,
+                    width: buttonWidth,
+                    height: buttonHeight,
                     child: ElevatedButton(
                       child: Text(
                           '×',
@@ -257,7 +261,7 @@ class _KeyboardState extends State<Keyboard> with WidgetsBindingObserver{
                         ),
                       ),
                       onPressed: () =>
-                          context.read<FormulaController>().addOperator('*'),
+                          context.read<FormulaController>().applyOperator('*'),
                     ),
                   ),
                 ],
@@ -266,8 +270,8 @@ class _KeyboardState extends State<Keyboard> with WidgetsBindingObserver{
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   SizedBox(
-                    width: 72,
-                    height: 72,
+                    width: buttonWidth,
+                    height: buttonHeight,
                     child: ElevatedButton(
                       child: const Text(
                           '4',
@@ -278,8 +282,8 @@ class _KeyboardState extends State<Keyboard> with WidgetsBindingObserver{
                           )
                       ),
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.grey[900],
-                        onPrimary: Colors.black,
+                        primary: numButtonPrimaryColor,
+                        onPrimary: numButtonOnPrimaryColor,
                         shape: const CircleBorder(
                           side: BorderSide(
                             color: Colors.black,
@@ -293,8 +297,8 @@ class _KeyboardState extends State<Keyboard> with WidgetsBindingObserver{
                     ),
                   ),
                   SizedBox(
-                    width: 72,
-                    height: 72,
+                    width: buttonWidth,
+                    height: buttonHeight,
                     child: ElevatedButton(
                       child: const Text(
                           '5',
@@ -305,8 +309,8 @@ class _KeyboardState extends State<Keyboard> with WidgetsBindingObserver{
                           )
                       ),
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.grey[900],
-                        onPrimary: Colors.black,
+                        primary: numButtonPrimaryColor,
+                        onPrimary: numButtonOnPrimaryColor,
                         shape: const CircleBorder(
                           side: BorderSide(
                             color: Colors.black,
@@ -320,8 +324,8 @@ class _KeyboardState extends State<Keyboard> with WidgetsBindingObserver{
                     ),
                   ),
                   SizedBox(
-                    width: 72,
-                    height: 72,
+                    width: buttonWidth,
+                    height: buttonHeight,
                     child: ElevatedButton(
                       child: const Text(
                           '6',
@@ -332,8 +336,8 @@ class _KeyboardState extends State<Keyboard> with WidgetsBindingObserver{
                           )
                       ),
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.grey[900],
-                        onPrimary: Colors.black,
+                        primary: numButtonPrimaryColor,
+                        onPrimary: numButtonOnPrimaryColor,
                         shape: const CircleBorder(
                           side: BorderSide(
                             color: Colors.black,
@@ -347,8 +351,8 @@ class _KeyboardState extends State<Keyboard> with WidgetsBindingObserver{
                     ),
                   ),
                   SizedBox(
-                    width: 72,
-                    height: 72,
+                    width: buttonWidth,
+                    height: buttonHeight,
                     child: ElevatedButton(
                       child: Text(
                           '-',
@@ -369,7 +373,7 @@ class _KeyboardState extends State<Keyboard> with WidgetsBindingObserver{
                         ),
                       ),
                       onPressed: () =>
-                          context.read<FormulaController>().addOperator('-'),
+                          context.read<FormulaController>().applyOperator('-'),
                     ),
                   ),
                 ],
@@ -378,8 +382,8 @@ class _KeyboardState extends State<Keyboard> with WidgetsBindingObserver{
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   SizedBox(
-                    width: 72,
-                    height: 72,
+                    width: buttonWidth,
+                    height: buttonHeight,
                     child: ElevatedButton(
                       child: const Text(
                           '1',
@@ -390,8 +394,8 @@ class _KeyboardState extends State<Keyboard> with WidgetsBindingObserver{
                           )
                       ),
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.grey[900],
-                        onPrimary: Colors.black,
+                        primary: numButtonPrimaryColor,
+                        onPrimary: numButtonOnPrimaryColor,
                         shape: const CircleBorder(
                           side: BorderSide(
                             color: Colors.black,
@@ -405,8 +409,8 @@ class _KeyboardState extends State<Keyboard> with WidgetsBindingObserver{
                     ),
                   ),
                   SizedBox(
-                    width: 72,
-                    height: 72,
+                    width: buttonWidth,
+                    height: buttonHeight,
                     child: ElevatedButton(
                       child: const Text(
                           '2',
@@ -417,8 +421,8 @@ class _KeyboardState extends State<Keyboard> with WidgetsBindingObserver{
                           )
                       ),
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.grey[900],
-                        onPrimary: Colors.black,
+                        primary: numButtonPrimaryColor,
+                        onPrimary: numButtonOnPrimaryColor,
                         shape: const CircleBorder(
                           side: BorderSide(
                             color: Colors.black,
@@ -432,8 +436,8 @@ class _KeyboardState extends State<Keyboard> with WidgetsBindingObserver{
                     ),
                   ),
                   SizedBox(
-                    width: 72,
-                    height: 72,
+                    width: buttonWidth,
+                    height: buttonHeight,
                     child: ElevatedButton(
                       child: const Text(
                           '3',
@@ -444,8 +448,8 @@ class _KeyboardState extends State<Keyboard> with WidgetsBindingObserver{
                           )
                       ),
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.grey[900],
-                        onPrimary: Colors.black,
+                        primary: numButtonPrimaryColor,
+                        onPrimary: numButtonOnPrimaryColor,
                         shape: const CircleBorder(
                           side: BorderSide(
                             color: Colors.black,
@@ -459,8 +463,8 @@ class _KeyboardState extends State<Keyboard> with WidgetsBindingObserver{
                     ),
                   ),
                   SizedBox(
-                    width: 72,
-                    height: 72,
+                    width: buttonWidth,
+                    height: buttonHeight,
                     child: ElevatedButton(
                       child: Text(
                           '+',
@@ -480,7 +484,7 @@ class _KeyboardState extends State<Keyboard> with WidgetsBindingObserver{
                           ),
                         ),
                       ),
-                      onPressed: () => context.read<FormulaController>().addOperator('+'),
+                      onPressed: () => context.read<FormulaController>().applyOperator('+'),
                     ),
                   ),
                 ],
@@ -489,8 +493,8 @@ class _KeyboardState extends State<Keyboard> with WidgetsBindingObserver{
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   SizedBox(
-                    width: 72,
-                    height: 72,
+                    width: buttonWidth,
+                    height: buttonHeight,
                     child: ElevatedButton(
                       child: const Text(
                           '0',
@@ -501,8 +505,8 @@ class _KeyboardState extends State<Keyboard> with WidgetsBindingObserver{
                           )
                       ),
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.grey[900],
-                        onPrimary: Colors.black,
+                        primary: numButtonPrimaryColor,
+                        onPrimary: numButtonOnPrimaryColor,
                         shape: const CircleBorder(
                           side: BorderSide(
                             color: Colors.black,
@@ -516,8 +520,8 @@ class _KeyboardState extends State<Keyboard> with WidgetsBindingObserver{
                     ),
                   ),
                   SizedBox(
-                    width: 72,
-                    height: 72,
+                    width: buttonWidth,
+                    height: buttonHeight,
                     child: ElevatedButton(
                       child: const Text(
                           '+/-',
@@ -528,8 +532,8 @@ class _KeyboardState extends State<Keyboard> with WidgetsBindingObserver{
                           )
                       ),
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.grey[900],
-                        onPrimary: Colors.black,
+                        primary: numButtonPrimaryColor,
+                        onPrimary: numButtonOnPrimaryColor,
                         shape: const CircleBorder(
                           side: BorderSide(
                             color: Colors.black,
@@ -542,8 +546,8 @@ class _KeyboardState extends State<Keyboard> with WidgetsBindingObserver{
                     ),
                   ),
                   SizedBox(
-                    width: 72,
-                    height: 72,
+                    width: buttonWidth,
+                    height: buttonHeight,
                     child: ElevatedButton(
                       child: const Text(
                           '.',
@@ -554,8 +558,8 @@ class _KeyboardState extends State<Keyboard> with WidgetsBindingObserver{
                           )
                       ),
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.grey[900],
-                        onPrimary: Colors.black,
+                        primary: numButtonPrimaryColor,
+                        onPrimary: numButtonOnPrimaryColor,
                         shape: const CircleBorder(
                           side: BorderSide(
                             color: Colors.black,
@@ -568,8 +572,8 @@ class _KeyboardState extends State<Keyboard> with WidgetsBindingObserver{
                     ),
                   ),
                   SizedBox(
-                    width: 72,
-                    height: 72,
+                    width: buttonWidth,
+                    height: buttonHeight,
                     child: ElevatedButton(
                       child: const Text(
                           '=',
@@ -591,7 +595,7 @@ class _KeyboardState extends State<Keyboard> with WidgetsBindingObserver{
                         ),
                       ),
                       onPressed: () =>
-                          context.read<FormulaController>().calculate(),
+                          context.read<FormulaController>().applyOperator('='),
                     ),
                   ),
                 ],

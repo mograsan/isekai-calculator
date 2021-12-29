@@ -22,7 +22,8 @@ class _OutputState extends State<Output> with WidgetsBindingObserver{
 
   @override
   Widget build(BuildContext context) {
-    final currentChar = context.select((FormulaController controller) => controller.currentChar);
+    final currentChar = context.select((FormulaController controller) => controller.displayNum);
+    final fontSize = context.select((FormulaController controller) => controller.fontSize);
     return ChangeNotifierProvider(
       create: (context) => FormulaController(),
       child: Container(
@@ -35,10 +36,11 @@ class _OutputState extends State<Output> with WidgetsBindingObserver{
               alignment: Alignment.bottomRight,
               child: Text(
                   currentChar,
-                  style: const TextStyle(
+                  style: TextStyle(
                       decoration: TextDecoration.none,
-                      fontSize: 85.0,
+                      fontSize: fontSize,
                       fontWeight: FontWeight.w300,
+                      fontFamily: 'Helvetica Neue',
                       color: Colors.white
                   )
               )

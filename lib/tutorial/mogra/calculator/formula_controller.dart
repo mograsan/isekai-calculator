@@ -14,6 +14,7 @@ class FormulaController with ChangeNotifier {
   String multiOrDivOp = '';
   String lastOp = '';
   String recentOp = '';
+  double fontSize = 85.0;
   Parser parser = Parser();
   bool usedOperator = false;
   ContextModel context = ContextModel();
@@ -78,6 +79,7 @@ class FormulaController with ChangeNotifier {
       recentOp = '';
       displayNum = result;
     }
+    adjustDisplayNum();
     notifyListeners();
   }
 
@@ -159,11 +161,12 @@ class FormulaController with ChangeNotifier {
       if(currentNum == '' && n == '.'){
         currentNum = '0.';
       }
-      else{
+      else if(currentNum.split('.').join('').length < 9){
         currentNum += n;
       }
     }
     displayNum = currentNum;
+    adjustDisplayNum();
     notifyListeners();
   }
 
@@ -177,12 +180,14 @@ class FormulaController with ChangeNotifier {
     lastOp = '';
     recentOp = '';
     digit = 0;
+    adjustDisplayNum();
     clearButtonColor();
     notifyListeners();
   }
 
   void clear(){
     displayNum = '0';
+    adjustDisplayNum();
     currentNum = '';
     if(lastOp == '' && recentOp != ''){
       lastOp = recentOp;
@@ -198,29 +203,42 @@ class FormulaController with ChangeNotifier {
   }
 
   void changeCode(){
-    int numLen = displayNum.length;
-    if(double.parse(displayNum) >= 0){
-      displayNum = '-' + displayNum;
+    displayNum = displayNum.split(',').join('');
+    if(displayNum != '0'){
+      if(displayNum == result){
+        displayNum = (Decimal.parse(displayNum) * Decimal.parse('-1')).toString();
+        result = displayNum;
+      }
+      else if(displayNum == tmpResult){
+        displayNum = (Decimal.parse(displayNum) * Decimal.parse('-1')).toString();
+        tmpResult = displayNum;
+      }
+      else{
+        displayNum = (Decimal.parse(displayNum) * Decimal.parse('-1')).toString();
+        currentNum = displayNum;
+      }
     }
-    else{
-      displayNum = displayNum.substring(1, numLen);
-    }
+    adjustDisplayNum();
     notifyListeners();
   }
 
   void convertToPercentile(){
+    displayNum = displayNum.split(',').join('');
     if(displayNum != '0'){
-      displayNum = (Decimal.parse(displayNum) * Decimal.parse('0.01')).toString();
       if(displayNum == result){
+        displayNum = (Decimal.parse(displayNum) * Decimal.parse('0.01')).toString();
         result = displayNum;
       }
       else if(displayNum == tmpResult){
+        displayNum = (Decimal.parse(displayNum) * Decimal.parse('0.01')).toString();
         tmpResult = displayNum;
       }
       else{
+        displayNum = (Decimal.parse(displayNum) * Decimal.parse('0.01')).toString();
         currentNum = displayNum;
       }
     }
+    adjustDisplayNum();
     notifyListeners();
   }
 
@@ -235,6 +253,75 @@ class FormulaController with ChangeNotifier {
     divideButtonFontColor = Colors.white;
     notifyListeners();
   }
+
+  void adjustDisplayNum(){
+    if (displayNum != '表示できない🥺') {
+      var isMinus = displayNum.contains('-');
+      var tmpNum = displayNum.replaceAll('-', '').replaceAll(',', '');
+      var numBuf = tmpNum.split('.');
+      var displayNumLen = tmpNum
+          .replaceAll('.', '')
+          .length;
+      if(displayNumLen > 9 && numBuf.length == 2 && numBuf[0].length < 9){
+        print(displayNumLen);
+        var extraLen = 9 - numBuf[0].length;
+        print(extraLen);
+        var baseNum = pow(10, extraLen);
+        print(baseNum);
+        displayNum = ((Decimal.parse(baseNum.toString()) * Decimal.parse(tmpNum.toString())).round() / Decimal.parse(baseNum.toString())).toDouble().toString();
+        if(isMinus){
+          displayNum = '-' + displayNum;
+        }
+        print(tmpNum);
+        print(displayNum);
+        numBuf = displayNum.split('.');
+        if(numBuf.length == 2 && numBuf[1] == '0'){
+          displayNum = numBuf[0];
+          numBuf = displayNum.split('.');
+        }
+      }
+      var numInt = numBuf[0];
+      if (numInt.length >= 4) {
+        displayNum = '';
+        var len = numInt.length;
+        for (int i = 0; i < len; i++) {
+          if (i != 0 && (i + 1) % 3 == 1) {
+            displayNum = ',' + displayNum;
+          }
+          displayNum = numInt[len - i - 1] + displayNum;
+        }
+        if (numBuf.length == 2) {
+          displayNum = displayNum + '.' + numBuf[1];
+        }
+        if(isMinus){
+          displayNum = '-'+displayNum;
+        }
+      }
+
+      displayNumLen = displayNum.replaceAll('-', '').replaceAll(',', '').replaceAll('.', '').length;
+      if (displayNumLen <= 6) {
+        fontSize = 85.0;
+      }
+      else if (displayNumLen == 7) {
+        fontSize = 80.0;
+      }
+      else if (displayNumLen == 8) {
+        fontSize = 70.0;
+      }
+      else if (displayNumLen == 9 && !isMinus) {
+        fontSize = 65.0;
+      }
+      else if(displayNumLen == 9 && isMinus){
+        fontSize = 60.0;
+      }
+      else {
+        displayNum = '表示できない🥺';
+        fontSize = 40.0;
+      }
+    }
+    notifyListeners();
+  }
+
 
   void changeButtonColor(String op){
     clearButtonColor();
