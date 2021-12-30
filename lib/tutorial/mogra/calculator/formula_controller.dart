@@ -263,17 +263,12 @@ class FormulaController with ChangeNotifier {
           .replaceAll('.', '')
           .length;
       if(displayNumLen > 9 && numBuf.length == 2 && numBuf[0].length < 9){
-        print(displayNumLen);
         var extraLen = 9 - numBuf[0].length;
-        print(extraLen);
         var baseNum = pow(10, extraLen);
-        print(baseNum);
         displayNum = ((Decimal.parse(baseNum.toString()) * Decimal.parse(tmpNum.toString())).round() / Decimal.parse(baseNum.toString())).toDouble().toString();
         if(isMinus){
           displayNum = '-' + displayNum;
         }
-        print(tmpNum);
-        print(displayNum);
         numBuf = displayNum.split('.');
         if(numBuf.length == 2 && numBuf[1] == '0'){
           displayNum = numBuf[0];
